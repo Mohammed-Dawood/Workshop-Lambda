@@ -1,14 +1,12 @@
 package se.lexicon.util;
 
-
 import se.lexicon.model.Gender;
 import se.lexicon.model.Person;
 
-import java.time.LocalDate;
-import java.time.Year;
-import java.util.ArrayList;
 import java.util.List;
-
+import java.time.Year;
+import java.time.LocalDate;
+import java.util.ArrayList;
 
 public class PersonGenerator {
 
