@@ -1,7 +1,7 @@
 package se.lexicon.model;
 
-import java.time.LocalDate;
 import java.util.Objects;
+import java.time.LocalDate;
 
 public class Person {
     private static int counter = 0;
