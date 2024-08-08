@@ -6,8 +6,8 @@ import se.lexicon.model.Gender;
 import se.lexicon.model.Person;
 import se.lexicon.data.DataStorage;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.time.Period;
 
 public class Exercises {
 
@@ -104,7 +104,7 @@ public class Exercises {
 
         // Lambda expression to filter males whose first name starts with "E"
         List<String> maleNamesStartingWithE = storage.findManyAndMapEachToString(
-                person ->Gender.MALE.equals(person.getGender()) && person.getFirstName().startsWith("E"),
+                person -> Gender.MALE.equals(person.getGender()) && person.getFirstName().startsWith("E"),
 
                 // Lambda expression to convert each Person to a String
                 person -> person.getFirstName() + " " + person.getLastName()
@@ -123,10 +123,22 @@ public class Exercises {
      */
     public static void exercise7(String message) {
         System.out.println(message);
-        //Write your code here
+
+        // Lambda expression to filter persons below the age of 10
+        List<String> personsBelowAge10 = storage.findManyAndMapEachToString(
+                person -> Period.between(person.getBirthDate(), LocalDate.now()).getYears() < 10,
+
+                // Lambda expression to convert each Person to a formatted String
+                person -> person.getFirstName() + " " + person.getLastName() + " " +
+                        Period.between(person.getBirthDate(), LocalDate.now()).getYears() + " years"
+        );
+
+        // Print each resulting string
+        personsBelowAge10.forEach(System.out::println);
 
         System.out.println("----------------------");
     }
+
 
     /*
         TODO:  8.	Using findAndDo() print out all people with firstName “Ulf”.
