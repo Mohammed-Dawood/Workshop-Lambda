@@ -8,6 +8,8 @@ import se.lexicon.data.DataStorage;
 
 import java.util.List;
 import java.time.Period;
+import java.util.Comparator;
+
 
 public class Exercises {
 
@@ -146,9 +148,13 @@ public class Exercises {
     public static void exercise8(String message) {
         System.out.println(message);
         //Write your code here
-
+        storage.findAndDo(
+                person -> person.getFirstName().equals("Ulf"),
+                System.out::println
+        );
         System.out.println("----------------------");
     }
+
 
     /*
         TODO:  9.	Using findAndDo() print out everyone who have their lastName contain their firstName.
@@ -156,7 +162,10 @@ public class Exercises {
     public static void exercise9(String message) {
         System.out.println(message);
         //Write your code here
-
+        storage.findAndDo(
+                person -> person.getLastName().toLowerCase().contains(person.getFirstName().toLowerCase()),
+                System.out::println
+        );
         System.out.println("----------------------");
     }
 
@@ -166,7 +175,10 @@ public class Exercises {
     public static void exercise10(String message) {
         System.out.println(message);
         //Write your code here
-
+        storage.findAndDo(
+                person -> person.getFirstName().equalsIgnoreCase(new StringBuilder(person.getFirstName()).reverse().toString()),
+                person -> System.out.println(person.getFirstName() + " " + person.getLastName())
+        );
         System.out.println("----------------------");
     }
 
@@ -176,16 +188,24 @@ public class Exercises {
     public static void exercise11(String message) {
         System.out.println(message);
         //Write your code here
+        storage.findAndSort(
+                person -> person.getFirstName().startsWith("A"),
+                Comparator.comparing(Person::getBirthDate)
+        ).forEach(System.out::println);
 
         System.out.println("----------------------");
     }
 
     /*
-        TODO:  12.	Using findAndSort() find everyone born before 1950 sorted reversed by lastest to earliest.
+        TODO:  12.	Using findAndSort() find everyone born before 1950 sorted reversed by latest to earliest.
      */
     public static void exercise12(String message) {
         System.out.println(message);
         //Write your code here
+        storage.findAndSort(
+                person -> person.getBirthDate().getYear() < 1950,
+                Comparator.comparing(Person::getBirthDate).reversed()
+        ).forEach(System.out::println);
 
         System.out.println("----------------------");
     }
@@ -195,7 +215,27 @@ public class Exercises {
      */
     public static void exercise13(String message) {
         System.out.println(message);
-        //Write your code here
+        //With Anonymous inner Class
+        Comparator<Person> compareLastName = new Comparator<Person>() {
+            @Override
+            public int compare(Person o1, Person o2) {
+                return o1.getLastName().compareTo(o2.getLastName());
+            }
+        };
+
+        //With Lambda
+        Comparator<Person> compareFirstName = (Person o1, Person o2) -> o1.getFirstName().compareTo(o2.getFirstName());
+        //With Method Reference
+        Comparator<Person> compareBirthDate = Comparator.comparing(Person::getBirthDate);
+        //Stack
+        Comparator<Person> all = compareLastName.thenComparing(compareFirstName).thenComparing(compareBirthDate);
+        storage.findAndSort(all).forEach(System.out::println);
+
+        /*
+        storage.findAndSort(
+                Comparator.comparing(Person::getLastName).thenComparing(Person::getFirstName).thenComparing(Person::getBirthDate)
+        ).forEach(System.out::println);
+        */
 
         System.out.println("----------------------");
     }
